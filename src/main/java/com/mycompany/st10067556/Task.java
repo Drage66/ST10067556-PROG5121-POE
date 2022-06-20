@@ -1,9 +1,5 @@
 package com.mycompany.st10067556;
 
-import javax.swing.*;
-import java.io.*;
-import java.nio.Buffer;
-import java.util.Locale;
 
 import static com.mycompany.st10067556.ST10067556.duration;
 import static com.mycompany.st10067556.ST10067556.totalDuration;
@@ -11,7 +7,6 @@ import static com.mycompany.st10067556.ST10067556.totalDuration;
 public class Task
 
 {
-
     public static boolean checkTaskDescription(String task)
     {
         return task.length() > 50;//returns true if the description length is less than 50
