@@ -25,25 +25,8 @@ public class Task
 
     public static String printTaskDetails(String taskStatus, String developerDeets, String taskNumber, String taskName, String taskDescription, String taskID, int duration)
     {
-        //creates a selection menu if depending on if user selects to do, done, or doing
-        String status = "";
 
-        if(taskStatus.equals("1"))
-        {
-            status = "To Do";
-        }
-        if (taskStatus.equals("2"))
-        {
-            status = "Done";
-        }
-        if (taskStatus.equals("3"))
-        {
-            status = "Doing";
-        }
-
-
-
-        return "Task Status: " + status
+        return "Task Status: " + taskStatus
                 +"\nDeveloper Details: " + developerDeets
                 +"\nTask Number: " + taskNumber
                 +"\nTask Name: " + taskName
@@ -57,7 +40,7 @@ public class Task
     {
         totalDuration += duration;
         return totalDuration;//returns total hours of all task
-
     }
+
 
 }

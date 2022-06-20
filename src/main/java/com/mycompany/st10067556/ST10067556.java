@@ -3,13 +3,6 @@
 package com.mycompany.st10067556;
 
 import javax.swing.*;
-import javax.xml.validation.SchemaFactoryConfigurationError;
-import java.io.*;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.regex.*;
-
 
 
 public class ST10067556
@@ -22,13 +15,20 @@ public class ST10067556
         //String variable declarations
         String passwordInput = "";
         String userNameInput = JOptionPane.showInputDialog("Enter Username");
+        String[] allDevelopers, allTasks, allTaskID,allTaskStatus;
+        int[] allTaskDuration;
+        String numberOfTask;
+        int InumberOfTask = 0;
+
+
+        ShowReport report = new ShowReport(); //creates and declares the ShowReport Class
 
         passwordInput = JOptionPane.showInputDialog("Enter Password");
 
         JOptionPane.showMessageDialog(null, Login.registerUser(Login.checkUserName(userNameInput),Login.checkPasswordComplexity(passwordInput)));
         JOptionPane.showMessageDialog(null, Login.returnLoginStatus(Login.loginUser(userNameInput, passwordInput),userNameInput));
 
-        if(Login.loginUser(userNameInput, passwordInput))
+        if(Login.loginUser(userNameInput, passwordInput))//checks whether username and password match the LoginStorage.txt
         {
             String option = " ";
             while (!option.equals("3"))
@@ -43,8 +43,16 @@ public class ST10067556
                     totalDuration = 0;
 
 
-                    String numberOfTask = JOptionPane.showInputDialog("How many tasks do you wish to enter?");
-                    int InumberOfTask = Integer.parseInt(numberOfTask);
+                    numberOfTask = JOptionPane.showInputDialog("How many tasks do you wish to enter?");
+                    InumberOfTask = Integer.parseInt(numberOfTask);
+
+                    //initializes the spaces for the arrays to the number of tasks requested
+                    allDevelopers = new String[InumberOfTask];
+                    allTasks = new String[InumberOfTask];
+                    allTaskID = new String[InumberOfTask];
+                    allTaskStatus = new String[InumberOfTask];
+                    allTaskDuration = new int[InumberOfTask];
+
 
                     for (int i = 0; i < InumberOfTask; i++)
                     {
@@ -68,22 +76,84 @@ public class ST10067556
                                 "\nOption2) Done" +
                                 "\nOption3) Doing");
 
+                        switch (taskStatus)//switch statement to convert the input numbers into their respective words
+                        {
+                            case "1":
+                                taskStatus = "To Do";
+                                break;
+
+                            case "2":
+                                taskStatus = "Done";
+                                break;
+
+                            case "3":
+                                taskStatus = "Doing";
+                                break;
+                        }
+
 
                         JOptionPane.showMessageDialog(null, Task.printTaskDetails(taskStatus,devDetail,taskNumber,taskName,taskDesc,taskID,duration));
                         Task.returnTotalHours();
 
+                        allDevelopers[i] = devDetail;
+                        allTasks[i] = taskName;
+                        allTaskID[i] = taskID;
+                        allTaskDuration[i] = duration;
+                        allTaskStatus[i] = taskStatus;
 
                     }
+
+                    report.dev = allDevelopers;
+                    report.taskName = allTasks;
+                    report.taskStatus = allTaskStatus;
+                    report.taskDuration = allTaskDuration;
+                    report.taskID = allTaskID;
+
                     JOptionPane.showMessageDialog(null, "The Total amount of hours spent on task is " + Task.returnTotalHours() + " hours!");
 
                 }
 
+
                 if (option.equals("2"))
                 {
-                    JOptionPane.showMessageDialog(null, "Coming Soon :)");
+                    String arrayOptions = JOptionPane.showInputDialog(null, "1) Display Tasks Done" +
+                            "\n2)Display longest duration task" +
+                            "\n3)Search for task" +
+                            "\n4)Search for all task assigned to developer" +
+                            "\n5)Delete task" +
+                            "\n6)Print all captured tasks");
+
+                    switch (arrayOptions)
+                    {
+                        case "1":
+                            report.statusOfDone();
+                            break;
+
+                        case "2":
+                            report.longestDuration();
+                            break;
+
+                        case "3":
+                            String taskName = JOptionPane.showInputDialog(null, "Enter name to search");
+                            report.searchTaskName(taskName);
+                            break;
+
+                        case "4":
+                            String devName = JOptionPane.showInputDialog(null, "Enter Developer name");
+                            report.searchDev(devName);
+                            break;
+
+                        case "5":
+                            String taskNameDelete = JOptionPane.showInputDialog(null, "Enter task Name to delete");
+                            report.deleteTask(taskNameDelete);
+                            break;
+
+                        case "6":
+                            report.displayReport();
+                            break;
+                    }
                 }
             }
-
         }
     }
 
